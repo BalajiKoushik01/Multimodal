@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Data directories (too large for git)
+data/annocerv_real/
+data/annocerv_repo/
+data/colposcopy/
+data/histopathology/
+data/mobileodt/
+data/expert_eyes/
+new dataset/
+
+# Keep only Python scripts in data directory
+!data/*.py
+!data/__init__.py
+
+# Checkpoints (too large for GitHub, use Git LFS or external storage)
+checkpoints/*.pth
+checkpoints/*.pt
+
+# Output directories
+outputs/
+preprocessed/
+visualizations/*.png
+visualizations/*.jpg
+
+# Generated documents
+docs/*.docx
+docs/test.*
+
+# Training logs
+*.log
+logs/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyTorch
+*.pth
+*.pt
+!checkpoints/checkpoint_epoch_100.pth
+!checkpoints/finetuned_epoch_100.pth
+
+# Temporary files
+tmp/
+temp/
+tmp_*/
+*.tmp
