@@ -38,3 +38,7 @@ Datasets and checkpoints must be obtained separately with appropriate permission
 - external validation and failure cases.
 
 Performance targets in historical planning documents are goals, not measured results. No clinical sensitivity, diagnostic accuracy or real-world impact is claimed without independently verified evidence.
+
+## Evaluation reliability safeguards (November 2026)
+
+The inference and evaluation scripts now **fail instead of producing predictions** when model checkpoints are absent or incompatible. Checkpoints are loaded in tensor-only mode and their state dictionaries must match the model. Corrupted/unreadable evaluation images raise an error rather than being silently replaced with black tensors. These are research-integrity improvements, **not** clinical validation or proof that an existing checkpoint is safe or accurate. Run the scripts only with trusted checkpoints and properly licensed, independently reviewed datasets.
