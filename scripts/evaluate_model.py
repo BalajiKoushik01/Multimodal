@@ -70,9 +70,7 @@ class EvalDataset(Dataset):
             if self.transform:
                 image = self.transform(image)
         except Exception as e:
-            print(f"Error loading {img_path}: {e}")
-            # Return dummy
-            image = torch.zeros((3, 256, 256))
+            raise RuntimeError(f"Cannot evaluate unreadable image: {img_path}") from e
         
         return image, label
 
@@ -98,6 +96,8 @@ def evaluate():
     dataset = EvalDataset(os.path.join(config['dataset_path'], 'annocerv_real'), case_labels, transform=transform)
     dataloader = DataLoader(dataset, batch_size=config['batch_size'], shuffle=False, num_workers=0)
     
+    if len(dataset) == 0:
+        raise ValueError("No evaluation images found; cannot report scores")
     print(f"Evaluating on {len(dataset)} images from AnnoCerv.")
 
     # Model
@@ -105,12 +105,10 @@ def evaluate():
     
     # Load Weights
     weights_path = os.path.join(config['weights_save_path'], 'finetuned_epoch_100.pth')
-    if os.path.exists(weights_path):
-        print(f"Loading weights from {weights_path}")
-        model.load_state_dict(torch.load(weights_path, map_location=device), strict=False)
-    else:
-        print("Error: Finetuned weights not found.")
-        return
+    if not os.path.isfile(weights_path):
+        raise FileNotFoundError(f"Evaluation checkpoint not found: {weights_path}")
+    print(f"Loading weights from {weights_path}")
+    model.load_state_dict(torch.load(weights_path, map_location=device, weights_only=True), strict=True)
 
     model.eval()
     

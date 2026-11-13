@@ -22,11 +22,12 @@ def inference(image_path_colpo, image_path_histo, model_path, config_path):
     config = load_config(config_path)
     
     # Model
+    # A missing or incompatible checkpoint must never produce medical-looking predictions.
+    if not os.path.isfile(model_path):
+        raise FileNotFoundError(f"Trained model checkpoint not found: {model_path}")
     model = DualEncoder(config).to(device)
-    if os.path.exists(model_path):
-        model.load_state_dict(torch.load(model_path, map_location=device), strict=False)
-    else:
-        print(f"Warning: Model weights not found at {model_path}. Using random initialization.")
+    state = torch.load(model_path, map_location=device, weights_only=True)
+    model.load_state_dict(state, strict=True)
     
     model.eval()
 
